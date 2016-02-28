@@ -6,6 +6,7 @@
  * Version : 3
  * https://www.facebook.com/DevelopersOrganism
  * mailto:info{at}developers-organism.com
+ * Source at : https://github.com/aukgit/JavaScript-MVC-Framework
  */
 
 $.app = {
@@ -22,12 +23,10 @@ $.app = {
         var app = $.app,
             $container = app.$hiddenContainer;
 
-        if ($container) {
-            return $container;
-        } else {
-            app.$hiddenContainer = $.byId("hidden-fields-container");
-            $container = app.$hiddenContainer;
-        }
+        app.$hiddenContainer = $.byId("hidden-fields-container");
+        app.$hiddenFieldDictionary = [];
+        app.hiddenFieldNamesDictionary = [];
+        $container = app.$hiddenContainer;
         return $container;
     },
     isHiddenContainerExist: function () {

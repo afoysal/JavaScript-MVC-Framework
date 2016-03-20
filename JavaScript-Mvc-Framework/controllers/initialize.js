@@ -1,5 +1,4 @@
 ﻿/// <reference path="../jQueryExtend.js" />
-
 ;
 $.app.controllers = $.app.controllers || {};
 $.app.controllers.initialize = function () {

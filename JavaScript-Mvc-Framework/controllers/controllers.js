@@ -19,11 +19,8 @@ $.app.controllers = {
         /// <returns type=""></returns>
         var pageId = controllerExtendedTypeObject.pageId,
             $page = $.app.controllers.getPage(controllerExtendedTypeObject);
-        if (!controllerExtendedTypeObject.isInitialized) {
-            controllerExtendedTypeObject.$pageElement = $.byId(pageId);
-            $page = controllerExtendedTypeObject.$pageElement;
-            controllerExtendedTypeObject.isInitialized = true;
-        }
+        controllerExtendedTypeObject.$pageElement = $.byId(pageId);
+        $page = controllerExtendedTypeObject.$pageElement;
         return !$.isEmpty($page);
     },
     getPage: function (controllerExtendedTypeObject) {

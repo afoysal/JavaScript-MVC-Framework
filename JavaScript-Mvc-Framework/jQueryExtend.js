@@ -13,14 +13,6 @@
 /// <reference path="../jQuery/jquery-2.1.4-vsdoc.js" />
 ;
 
-/**!
- * Written by Alim Ul Karim
- * Email: devorg.bd{at}gmail.com
- * Dated : 15 Jun 2015
- * Version : 0.1
- * https://www.facebook.com/DevelopersOrganism
- * mailto:info{at}developers-organism.com
- */
 $.isEmpty = function (variable) {
     /// <summary>
     /// Compare any object to null , unidentified or empty then returns true/false.
@@ -70,6 +62,7 @@ $.getArrayExcept = function (givenArray, excludingArray) {
     return results;
 }
 
+
 $.isString = function (variable) {
     /// <summary>
     /// Checks wheater it is a string type or not.
@@ -108,9 +101,8 @@ $.getFriendlyUrlSlug = function (str) {
         str = str.trim();
         var regExp = new RegExp(regexString, 'gi');
         return str.replace(regExp, "-");
-    } 
+    }
     return "";
-
 };
 /**
  * single input IFRAME code HTML  to Square
@@ -348,20 +340,3 @@ $.hideEmptyFields = function ($container) {
         }
     }
 }
-$.fn.extend({
-    getClassesList: function () {
-        /// <summary>
-        /// jQuery element get all classes as an array.
-        /// </summary>
-        /// <returns type="array">array list of classes.</returns>
-        return $.getClassesList(this);
-    },
-    isEmpty: function () {
-        /// <summary>
-        /// Compare any object to null , unidentified or empty then returns true/false.
-        /// </summary>
-        /// <param name="variable"> Anything can be possible.</param>
-        /// <returns type="boolean">True/False</returns>
-        return $.isEmpty(this);
-    }
-});

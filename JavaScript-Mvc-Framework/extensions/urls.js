@@ -1,7 +1,4 @@
-﻿/// <reference path="../jQuery/jquery-2.1.4.js" />
-/// <reference path="../jQuery/jquery-2.1.4-vsdoc.js" />
-/// <reference path="urls.js" />
-/// <reference path="byId.js" />
+﻿/// <reference path="urls.js" />
 /// <reference path="constants.js" />
 /// <reference path="country-phone.js" />
 /// <reference path="devOrg.js" />
@@ -11,6 +8,9 @@
 /// <reference path="regularExp.js" />
 /// <reference path="selectors.js" />
 /// <reference path="upload.js" />
+/// <reference path="D:\Working\GitHub\WereViewProject\WereViewApp\Content/Scripts/jquery-2.1.4.js" />
+/// <reference path="D:\Working\GitHub\WereViewProject\WereViewApp\Content/Scripts/jquery-2.1.4.intellisense.js" />
+/// <reference path="../schema/url.js" />
 
 
 ;
@@ -29,7 +29,7 @@ $.app.urls = {
     emailValidation: "Email",
     timeZoneJson: "Services/GetTimeZone", // look like this /Partials/GetTimeZone/CountryID
     languageJson: "Services/GetLanguage", // look like this /Partials/GetTimeZone/CountryID
-    getHostUrl: function () {
+    getHostUrl: function() {
         /// <summary>
         /// Retrieve host url from host-url id hidden field
         /// Return host url with a slash at the bottom.
@@ -51,7 +51,7 @@ $.app.urls = {
         return self.hostUrl;
     },
 
-    getAbsUrl: function (givenUrl) {
+    getAbsUrl: function(givenUrl) {
         /// <summary>
         /// Given url shouldn't have any slash at the begining.
         /// </summary>
@@ -67,7 +67,7 @@ $.app.urls = {
     },
 
 
-    getAbsValidatorUrl: function (url) {
+    getAbsValidatorUrl: function(url) {
         /// <summary>
         /// Returns absolute url of a validation
         /// </summary>
@@ -78,6 +78,40 @@ $.app.urls = {
         var urlCombined = self.validator + url;
         return self.getAbsUrl(urlCombined);
 
+    },
+
+    getGeneralUrlSchema: function (otherUrlsList) {
+        /// <summary>
+        /// Generate a general url schema , which contains
+        /// It will look for hidden fields : edit-url, add-url, delete-url, save-url
+        /// </summary>
+        /// <param name="otherUrlsList" type="type">
+        /// Array of list items containing new url names.
+        /// If null then only return url schema with add,edit,save,remove urls.
+        /// For example, retrieving "edit-url" hidden value pass "edit".
+        /// </param>
+        /// <returns type="$.app.schema.url">
+        /// Returns a url schema object from schema folder's url (schema).
+        /// $.app.schema.url = {
+        /// add: null,
+        /// edit: null,
+        /// delete: null,
+        /// save:null
+        ///};
+        /// </returns>
+        var urlSchema = $.app.schema.create($.app.schema.url);
+        urlSchema.edit = $.getHiddenValue("edit-url");
+        urlSchema.add = $.getHiddenValue("add-url");
+        urlSchema.delete = $.getHiddenValue("delete-url");
+        urlSchema.save = $.getHiddenValue("save-url");
+        if ($.isEmpty(otherUrlsList)) {
+            for (var i = 0; i < otherUrlsList.length; i++) {
+                var urlName = otherUrlsList[i];
+                urlSchema[urlName] = $.getHiddenValue(urlName + "-url");
+            }
+        }
+
+        return urlSchema;
     }
 
 }

@@ -9,6 +9,6 @@
 /// <reference path="../find-byId.js" />
 ; $.app = $.app || {};
 $.app.initialize = $.app.initialize || {};
-$(function () {
+$(document).ready(function () {
     $.app.initialize(); // initialize everything
 });

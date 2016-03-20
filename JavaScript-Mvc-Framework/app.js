@@ -1,33 +1,38 @@
-﻿/**!
- * Written by Alim Ul Karim
- * Email: devorg.bd{at}gmail.com
- * Dated : 10 Aug 2015
- * Modified Dated : 10 Sep 2015
- * Version : 3
- * https://www.facebook.com/DevelopersOrganism
- * mailto:info{at}developers-organism.com
- * Source at : https://github.com/aukgit/JavaScript-MVC-Framework
+﻿/*!
+ * JavaScript Mvc framework.
+ * Version                      : 1.5
+ * Last Modified                : 21 Mar 2016  
+ * 
+ * Copyright (c) Md. Alim Ul Karim
+ * Source Code Available at     : https://github.com/aukgit/JavaScript-MVC-Framework
+ * Linkedin profile             : https://bd.linkedin.com/in/alimkarim
+ * Facebook profile             : https://fb.com/alim.karim
+ * Available under MIT license  : https://opensource.org/licenses/MIT
+ * Facebook Page                : https://www.facebook.com/DevelopersOrganism
+ * Mail to                      : info{at}developers-organism.com
+ * Download                     : https://github.com/aukgit/JavaScript-MVC-Framework/archive/master.zip
+ * 
  */
 
+/**
+ * JavaScript Mvc framework works with convention :
+ * JavaScript Framework how it is implemented :  http://bit.ly/1KdWSHD | http://bit.ly/1KdX0qq 
+ */
 $.app = {
     isDebugging: true,
     $hiddenContainer: null,
     $hiddenFieldDictionary: [],
     hiddenFieldNamesDictionary: [],
-
     initHiddenContainer: function () {
         /// <summary>
         /// Initialize hidden container if exist.
         /// </summary>
         /// <returns type="">returns hidden container.</returns>
-        var app = $.app,
-            $container = app.$hiddenContainer;
-
+        var app = $.app;
         app.$hiddenContainer = $.byId("hidden-fields-container");
         app.$hiddenFieldDictionary = [];
         app.hiddenFieldNamesDictionary = [];
-        $container = app.$hiddenContainer;
-        return $container;
+        return app.$hiddenContainer;
     },
     isHiddenContainerExist: function () {
         return !$.isEmpty($.app.$hiddenContainer);
@@ -57,7 +62,6 @@ $.app = {
         /// <param name="$field">jQuery object.</param>
         /// <returns type=""></returns>
         var app = $.app;
-
         app.$hiddenFieldDictionary.push($field);
         app.hiddenFieldNamesDictionary.push($field.attr("name"));
     },
@@ -104,5 +108,4 @@ $.app = {
         }
         return null;
     }
-
 }

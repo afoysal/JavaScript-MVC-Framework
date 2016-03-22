@@ -18,12 +18,13 @@
  * JavaScript Mvc framework works with convention :
  * JavaScript Framework how it is implemented :  http://bit.ly/1KdWSHD | http://bit.ly/1KdX0qq 
  */
+; $.app = $.app || {};
 $.app = {
     isDebugging: true,
     $hiddenContainer: null,
     $hiddenFieldDictionary: [],
     hiddenFieldNamesDictionary: [],
-    initHiddenContainer: function () {
+    initHiddenContainer: function() {
         /// <summary>
         /// Initialize hidden container if exist.
         /// </summary>
@@ -34,10 +35,10 @@ $.app = {
         app.hiddenFieldNamesDictionary = [];
         return app.$hiddenContainer;
     },
-    isHiddenContainerExist: function () {
+    isHiddenContainerExist: function() {
         return !$.isEmpty($.app.$hiddenContainer);
     },
-    _getHiddenFieldDictionary: function (nameOfHiddenField) {
+    _getHiddenFieldDictionary: function(nameOfHiddenField) {
         /// <summary>
         /// Get dictionary hidden field values.
         /// </summary>
@@ -55,7 +56,7 @@ $.app = {
         }
         return null;
     },
-    _addHiddenFieldToDictionary: function ($field) {
+    _addHiddenFieldToDictionary: function($field) {
         /// <summary>
         /// Only adds the item to the dictionary ($hiddenFieldDictionary, hiddenFieldNamesDictionary)
         /// </summary>
@@ -65,7 +66,7 @@ $.app = {
         app.$hiddenFieldDictionary.push($field);
         app.hiddenFieldNamesDictionary.push($field.attr("name"));
     },
-    getHiddenField: function (nameOfHiddenField) {
+    getHiddenField: function(nameOfHiddenField) {
         /// <summary>
         /// Get the hidden field value, if possible get it from dictionary object.
         /// Make sure that you put every hidden field inside #hidden-fields-container container
@@ -91,7 +92,7 @@ $.app = {
         }
         return null;
     },
-    setHiddenValue: function (nameOfHiddenField, val) {
+    setHiddenValue: function(nameOfHiddenField, val) {
         /// <summary>
         /// Get the hidden field value, if possible get it from dictionary object.
         /// Make sure that you put every hidden field inside #hidden-fields-container container
@@ -108,4 +109,4 @@ $.app = {
         }
         return null;
     }
-}
+};

@@ -8,7 +8,7 @@
 /// <reference path="../detect-browser.js" />
 /// <reference path="initialize.js" />
 /// <reference path="programsearch.js" />
-$.app = $.app || {};
+;$.app = $.app || {};
 $.app.controllers = {
     // any thing related to controllers.
     isCurrentPage: function (controllerExtendedTypeObject) {

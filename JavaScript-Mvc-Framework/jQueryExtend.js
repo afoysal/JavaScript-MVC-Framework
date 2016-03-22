@@ -36,7 +36,7 @@ $.getClassesList = function ($jQueryObject) {
     return null;
 };
 
-$.getArrayExcept = function (givenArray, excludingArray) {
+$.getArrayExcept = function(givenArray, excludingArray) {
     /// <summary>
     /// givenArray = ['a','b','c'] , excludingArray=['b','c'], results=['a']
     /// </summary>
@@ -60,7 +60,7 @@ $.getArrayExcept = function (givenArray, excludingArray) {
         }
     }
     return results;
-}
+};
 
 
 $.isString = function (variable) {
@@ -142,7 +142,7 @@ $.squareToHtmlTag = function ($jQueryInput, tag) {
     $jQueryInput.val(currentText);
 };
 //validation modification
-$.checkValidInputs = function ($inputsCollection, starRatingLabel, invalidStarRatingCss) {
+$.checkValidInputs = function($inputsCollection, starRatingLabel, invalidStarRatingCss) {
     /// <summary>
     /// Check all the inputs jQuery validations.
     /// Also mark to red when invalid by the default valid method. 
@@ -201,7 +201,7 @@ $.checkValidInputs = function ($inputsCollection, starRatingLabel, invalidStarRa
         }
     }
     return true;
-}
+};
 
 $.isJson = function (obj) {
     if (!$.isEmpty(obj) && !$.isArray(obj) && typeof obj !== 'string' && typeof obj !== 'function') {
@@ -209,16 +209,16 @@ $.isJson = function (obj) {
     }
     return false;
 };
-$.getHiddenField = function (name) {
+$.getHiddenField = function(name) {
     /// <summary>
     /// Get hidden field object from cache if possible.
     /// </summary>
     /// <param name="name">Name of the field</param>
     /// <returns type=""></returns>
     return $.app.getHiddenField(name);
-}
+};
 
-$.getHiddenValue = function (name) {
+$.getHiddenValue = function(name) {
     /// <summary>
     /// Get string value of the hidden field.
     /// </summary>
@@ -229,9 +229,9 @@ $.getHiddenValue = function (name) {
         return $field.val();
     }
     return "";
-}
+};
 
-$.setHiddenValue = function (name, val) {
+$.setHiddenValue = function(name, val) {
     /// <summary>
     /// Get string value of the hidden field.
     /// </summary>
@@ -239,18 +239,18 @@ $.setHiddenValue = function (name, val) {
     /// <param name="val">value of the field</param>
     /// <returns type="">Get string value of the hidden field. If not found then empty string "".</returns>
     return $.app.setHiddenValue(name, val);
-}
+};
 
 
-$.isFunc = function (func) {
+$.isFunc = function(func) {
     /// <summary>
     /// Is it it a function.
     /// </summary>
     /// <param name="func">Anything</param>
     /// <returns type="">Returns true/false</returns>
     return typeof func === "function";
-}
-$.executeFunction = function (func) {
+};
+$.executeFunction = function(func) {
     /// <summary>
     /// Execute only if it is a function
     /// </summary>
@@ -259,7 +259,7 @@ $.executeFunction = function (func) {
     if (typeof func === "function") {
         func.apply();
     }
-}
+};
 
 $.getJsonToQueryString = function (url, json, isQuestionMarkRequired) {
     /// <summary>
@@ -292,7 +292,7 @@ $.getJsonToQueryString = function (url, json, isQuestionMarkRequired) {
     return "";
 };
 
-$.applyAutoResizeMultiline = function ($container) {
+$.applyAutoResizeMultiline = function($container) {
     /// <summary>
     /// Apply auto size on the elements which has elastic or autosize-enabled class.
     /// </summary>
@@ -309,8 +309,8 @@ $.applyAutoResizeMultiline = function ($container) {
     if (!$.isEmpty($autoSizableElements)) {
         $autoSizableElements.elastic();
     }
-}
-$.hideEmptyFields = function ($container) {
+};
+$.hideEmptyFields = function($container) {
     /// <summary>
     /// Hide elements which has empty input fields.
     /// </summary>
@@ -339,4 +339,4 @@ $.hideEmptyFields = function ($container) {
             //console.log(name);
         }
     }
-}
+};

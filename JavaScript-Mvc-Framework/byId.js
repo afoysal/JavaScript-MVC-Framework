@@ -1,4 +1,4 @@
-﻿;$.byId = function (elementIdString) {
+﻿;$.byId = function(elementIdString) {
     /// <summary>
     /// Get your element by id, there is no need to use #.
     /// However if there is a hash then it will be removed.
@@ -17,4 +17,4 @@
         }
     }
     return $(null);
-}
+};

@@ -1,6 +1,4 @@
 ﻿;$.app = $.app || {};
-
-
 ;$.app.schema = {
     create: function (schema) {
         /// <summary>

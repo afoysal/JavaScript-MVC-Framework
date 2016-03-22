@@ -1,5 +1,4 @@
 ﻿;$.app = $.app || {};
-
 $.app.selectors = {
     ids : {
         registerForm: "register-form",

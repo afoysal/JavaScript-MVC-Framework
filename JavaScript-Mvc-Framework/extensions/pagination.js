@@ -1,5 +1,5 @@
 ﻿; $.app = $.app || {};
-$.app.pagination = function ($paginationContainer, pageCountUrl, selectedPage, pagesNumberToDisplay, additionalClass, paginationClass, onComplete) {
+$.app.pagination = function($paginationContainer, pageCountUrl, selectedPage, pagesNumberToDisplay, additionalClass, paginationClass, onComplete) {
     /// <summary>
     /// render pagination numbers
     /// </summary>
@@ -10,7 +10,7 @@ $.app.pagination = function ($paginationContainer, pageCountUrl, selectedPage, p
     /// <param name="additionalClass">If any additional class need to be added with the pagination ul.</param>
     /// <param name="paginationClass">class will be added with the anchors by default it would be 'pagination-request'</param>
     /// <param name="onComplete">On complete this function will run.</param>
-    var renderPagination = function (totalPageCount) {
+    var renderPagination = function(totalPageCount) {
         if ($.app.isDebugging) {
             console.log("Page count:");
             console.log(totalPageCount);
@@ -48,7 +48,7 @@ $.app.pagination = function ($paginationContainer, pageCountUrl, selectedPage, p
             'class': isSelectedPage === true ? "active" : null
         });
         var linkUrl = "#" + differentPage,
-            anchorHtml = "<a class='"+ paginationClass +"' href='" + linkUrl + "' data-page='" + differentPage + "'>" + differnetPageStringName + "</a>";
+            anchorHtml = "<a class='" + paginationClass + "' href='" + linkUrl + "' data-page='" + differentPage + "'>" + differnetPageStringName + "</a>";
         $li.append(anchorHtml);
         $li.appendTo($ul);
 
@@ -60,7 +60,7 @@ $.app.pagination = function ($paginationContainer, pageCountUrl, selectedPage, p
             $li = $("<li></li>", {
                 'class': isSelectedPage === true ? "active" : null
             });
-            anchorHtml = "<a class='"+ paginationClass +"' href='" + linkUrl + "' data-page='" + differentPage + "'>" + differnetPageStringName + "</a>";
+            anchorHtml = "<a class='" + paginationClass + "' href='" + linkUrl + "' data-page='" + differentPage + "'>" + differnetPageStringName + "</a>";
             $li.append(anchorHtml);
             $li.appendTo($ul);
         }
@@ -71,7 +71,7 @@ $.app.pagination = function ($paginationContainer, pageCountUrl, selectedPage, p
             $li = $("<li></li>", {
                 'class': isSelectedPage === true ? "active" : null
             });
-            anchorHtml = "<a class='"+ paginationClass +"' href='" + linkUrl + "' data-page='" + i + "'>" + i + "</a>";
+            anchorHtml = "<a class='" + paginationClass + "' href='" + linkUrl + "' data-page='" + i + "'>" + i + "</a>";
             $li.append(anchorHtml);
             $li.appendTo($ul);
         }
@@ -84,7 +84,7 @@ $.app.pagination = function ($paginationContainer, pageCountUrl, selectedPage, p
             $li = $("<li></li>", {
                 'class': isSelectedPage === true ? "active" : null
             });
-            anchorHtml = "<a class='"+ paginationClass +"' href='" + linkUrl + "' data-page='" + differentPage + "'>" + differnetPageStringName + "</a>";
+            anchorHtml = "<a class='" + paginationClass + "' href='" + linkUrl + "' data-page='" + differentPage + "'>" + differnetPageStringName + "</a>";
             $li.append(anchorHtml);
             $li.appendTo($ul);
         }
@@ -93,7 +93,7 @@ $.app.pagination = function ($paginationContainer, pageCountUrl, selectedPage, p
         isSelectedPage = selectedPage === differentPage;
         linkUrl = "#" + differentPage;
         $li = $("<li></li>");
-        anchorHtml = "<a class='"+ paginationClass +"' href='" + linkUrl + "' data-page='" + differentPage + "'>" + differnetPageStringName + "</a>";
+        anchorHtml = "<a class='" + paginationClass + "' href='" + linkUrl + "' data-page='" + differentPage + "'>" + differnetPageStringName + "</a>";
         $li.append(anchorHtml);
         $li.appendTo($ul);
         $ul.appendTo($paginationContainer);
@@ -106,10 +106,10 @@ $.app.pagination = function ($paginationContainer, pageCountUrl, selectedPage, p
         method: "POST", // by default "GET"
         url: pageCountUrl,
         dataType: "JSON" //, // "Text" , "HTML", "xml", "script" 
-    }).done(function (response) {
+    }).done(function(response) {
         var totalCountOfPages = response;
         $.setHiddenValue("pages-exist", totalCountOfPages);
         renderPagination(totalCountOfPages);
     });
 
-}
+};

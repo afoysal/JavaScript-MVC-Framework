@@ -12,7 +12,7 @@
 /// <reference path="../../../app.js" />
 /// <reference path="../../../app.run.js" />
 /// <reference path="../../../byId.js" />
-/// <reference path="D:\Working\GitHub\WereViewProject\WereViewApp\Content/Scripts/jquery-2.1.4.js" />
+/// <reference path="D:\Working\GitHub\WereViewProject\WeReviewApp\Content/Scripts/jquery-2.1.4.js" />
 /// <reference path="../../../extensions/inputChangeTracker.js" />
 /// <reference path="../../../ProtoType/Array.js" />
 /// <reference path="../../../extensions/spinner.js" />
@@ -63,6 +63,7 @@ $.app.controllers.navItemsController = {
 
             // bind events
             self.bindEvents.saveOrderButtonClick(urlSchema.SaveOrder);
+            self.bindEvents.onBlurInputs($allInputs, urlSchema.SaveOrder);
 
 
 
@@ -71,6 +72,20 @@ $.app.controllers.navItemsController = {
     },
 
     bindEvents: {
+        onBlurInputs: function ($allInputs) {
+            var self = $.app.controllers.navItemsController,
+                tracker = self.prop.tracker;
+            $allInputs.on('blur', function () {
+                var $input = $(this),
+                    $tr = $input.parent().parent().parent();
+                console.log($tr);
+                if (tracker.isChanged($input)) {
+                    $tr.addClass("changed-row");
+                } else {
+                    $tr.removeClass("changed-row");
+                }
+            });
+        },
         saveOrderButtonClick: function(saveingUrl) {
             var $saveBtn = $.byId("save-order-btn");
             var self = $.app.controllers.navItemsController,
@@ -84,10 +99,11 @@ $.app.controllers.navItemsController = {
                 for (var i = 0; i < ids.length; i++) {
                     var id = ids[i],
                         $form = $.byId(formIdFormat + id);
-                    formArray[i] = $form.serializeArray();
+                    formArray[i] = $.serializeToJson($form);
                 }
-                return formArray;
+                return JSON.stringify(formArray);
             }
+
             $saveBtn.click(function(e) {
                 e.preventDefault();
                 // changed inputs ids array, only contains id values.
@@ -98,7 +114,8 @@ $.app.controllers.navItemsController = {
                     method: "POST", // by default "GET"
                     url: saveingUrl,
                     data: data, // PlainObject or String or Array
-                    dataType: "JSON" //, // "Text" , "HTML", "xml", "script" 
+                    dataType: "JSON", //, // "Text" , "HTML", "xml", "script" 
+                    contentType: "application/json", // must add this line for server json submit
                 }).done(function (response) {
                     if (isInTestingMode) {
                         console.log(response);

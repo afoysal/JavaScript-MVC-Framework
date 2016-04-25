@@ -215,7 +215,7 @@ $.getHiddenField = function(name) {
     /// </summary>
     /// <param name="name">Name of the field</param>
     /// <returns type=""></returns>
-    return $.app.getHiddenField(name);
+    return $.app.hiddenContainer.getHiddenField(name);
 };
 
 $.getHiddenValue = function(name) {
@@ -224,7 +224,7 @@ $.getHiddenValue = function(name) {
     /// </summary>
     /// <param name="name">Name of the field</param>
     /// <returns type="">Get string value of the hidden field. If not found then empty string "".</returns>
-    var $field = $.app.getHiddenField(name);
+    var $field = $.app.hiddenContainer.getHiddenField(name);
     if (!$.isEmpty($field)) {
         return $field.val();
     }
@@ -238,7 +238,7 @@ $.setHiddenValue = function(name, val) {
     /// <param name="name">Name of the field</param>
     /// <param name="val">value of the field</param>
     /// <returns type="">Get string value of the hidden field. If not found then empty string "".</returns>
-    return $.app.setHiddenValue(name, val);
+    return $.app.hiddenContainer.setHiddenValue(name, val);
 };
 
 
@@ -340,3 +340,41 @@ $.hideEmptyFields = function($container) {
         }
     }
 };
+
+/**
+ *  
+ * @param {} arrayOfSelectors  : Pass array of selectors
+ * @returns {} jquery elements
+ */
+$.getjQueryElementsByArrayOfSelectors = function (arrayOfSelectors) {
+    /// <summary>
+    /// Get jquery elements by passing array of selectors.
+    /// </summary>
+    /// <param name="arrayOfSelectors" type="type"></param>
+    /// <returns type=""></returns>
+    var results = [];
+    for (var i = 0; i < arrayOfSelectors.length; i++) {
+        var selector = arrayOfSelectors[i];
+        var $elems = $(selector);
+        for (var j = 0; j < $elems.length; j++) {
+            var elem = $elems[i];
+            results.push(elem);
+        }
+    }
+    return $(results);
+}
+
+/**
+ * Convert single form to json object.
+ * @param {} $singleForm 
+ * @returns {} 
+ */
+$.serializeToJson = function($singleForm) {
+    var result = {};
+    var formItemsArray = $singleForm.serializeArray();
+    for (var i = 0; i < formItemsArray.length; i++) {
+        var item = formItemsArray[i];
+        result[item.name] = item.value;
+    }
+    return result;
+}

@@ -22,8 +22,9 @@
 /// <reference path="../jQueryCaching.js" />
 /// <reference path="../jQueryExtend.js" />
 /// <reference path="../jQueryExtend.fn.js" />
+/// <reference path="../extensions/spinner.js" />
 
-;$.app.controllers = $.app.controllers || {};
+//;$.app.controllers = $.app.controllers || {};
 $.app.controllers.appController = {
     // any thing related to controllers.
     pageId: "app-controller",
@@ -36,17 +37,13 @@ $.app.controllers.appController = {
     },
     isDebugging: true,
     initialize: function () {
-        var controllers = $.app.controllers,
-            current = controllers.appController;
-        if (controllers.isCurrentPage(current)) {
-            controllers.execute(current);
-        }
+        //anything to config
     },
-    getPage: function() {
+    getPage: function () {
         return $.app.controllers.appController.$pageElement;
     },
-    config :  function() {
-        
+    config: function () {
+
     },
     actions: {
         /// <summary>
@@ -64,7 +61,7 @@ $.app.controllers.appController = {
                 urlSchema = $.app.urls.getGeneralUrlSchema(false, ["SaveOrder"]); // pass nothing will give Create,Edit,Delete,Index url
             // urlSchema.edit  will give edit url.
 
-            
+
             // bind events
             self.bindEvents.youtubePlayBtnClick();
 
@@ -83,7 +80,7 @@ $.app.controllers.appController = {
                     if (this.$moreExcert.length > 0) {
                         this.$moreExcert.hide();
                     }
-                 
+
                     var $numberElement = $(".app-viewed-numbers");
                     if ($numberElement.length > 0) {
                         $numberElement.number(true);
@@ -156,8 +153,66 @@ $.app.controllers.appController = {
                     }
                 });
             }
+        },
+        getReviewForm: function (e, $this) {
+            e.preventDefault();
+            console.log($this);
+
+            var self = $.WeReviewApp;
+            //var $reviewSpinner = $.byId(self.reviewSpinnerSelector).hide();
+
+            //if ($reviewSpinner.length > 0) {
+            //var $writeReviewBtn = $.byId("write-review-btn");
+
+            //var $ratingBox = $.byId("current-app-rating-box-field");
+            //if ($ratingBox.length > 0) {
+            //    $ratingBox.click(function (e) {
+            //        e.preventDefault();
+            //        $writeReviewBtn.trigger("click");
+            //    });
+            //}
+            //$writeReviewBtn.click(function () {
+            var $container = $this.getReferenceIdElement();
+            var cls = "already-embedded";
+            if (!$container.hasClass(cls)) {
+                $container.hide();
+                // inputs to load the review write form only via url
+                var reqVerifyFieldsArray = $("#review-request-fields").find("input").serializeArray();
+                //console.log(reqVerifyFields);
+                $.ajax({
+                    type: "POST",
+                    dataType: "html",
+                    url: $this.getUrlString(),
+                    data: reqVerifyFieldsArray,
+                    success: function (response) {
+                        //var $response = $(response);
+                        $container.html(response);
+                        $container.show("slow");
+                        //var $form = $response.filter("form");
+                        var $form = $.byId("reviews-controller");
+                        if ($form.length > 0) {
+                            //stop submitting and go through the processes and pages
+                            $.devOrg.uxFriendlySlide("#review-write-form",
+                                true,
+                                true //don't submit
+                            );
+
+                            //bind app submit event 
+                        }
+                    },
+                    beforeSend: function () {
+                        $.app.spinner.show("...Getting review from...");
+                    }
+                }).always(function () {
+                    $.app.spinner.hide();
+                });
+
+            } else {
+                $container.toggle("slow");
+            }
         }
+        //);
+        //}
+
     }
-
 }
-

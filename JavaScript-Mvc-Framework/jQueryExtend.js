@@ -22,6 +22,93 @@ $.isEmpty = function (variable) {
     return variable === undefined || variable === null || variable === '' || variable.length === 0;
 };
 /**
+ * Set default value if the given variable is empty or not provided.
+ * @param {} variable 
+ * @param {} defaultValue 
+ * @returns {} 
+ */
+$.setDefaultOnEmpty = function (variable, defaultValue) {
+    /// <summary>
+    /// Compare any object to null , unidentified or empty then sets the default value to that object and then returns
+    /// </summary>
+    /// <param name="variable"> Anything can be possible.</param>
+    /// <returns type="boolean">True/False</returns>
+    if (variable === undefined || variable === null || variable === '' || variable.length === 0) {
+        variable = defaultValue;
+    }
+    return variable;
+};
+/**
+ * Set default value if the given variable is empty or not provided.
+ * @param {} variable 
+ * @param {} defaultValue 
+ * @returns {} 
+ */
+$.setDefaultBoolOnEmpty = function (variable, defaultValue) {
+    /// <summary>
+    /// Compare any object to null , unidentified or empty then sets the default value to that object and then returns
+    /// </summary>
+    /// <param name="variable"> Anything can be possible.</param>
+    /// <returns type="boolean">True/False</returns>
+    if (variable === undefined || variable === null || variable === '' || variable.length === 0) {
+        variable = defaultValue;
+    }
+    return variable === "true" || variable === true;
+};
+/**
+ * gets the common classes from the list.
+ * @param {} classesWithSpace1 : classes with spaces eg. "Hello world"
+ * @param {} classesWithSpace2  : classes with spaces eg "world Hello v"
+ * @returns {} return a array list of common classes eg. ["Hello",  "world"]
+ */
+$.getCommonClasses = function (classesWithSpace1, classesWithSpace2) {
+    var list1 = classesWithSpace1.split(" "),
+        list2 = classesWithSpace2.split(" "),
+        common = [];
+    var len = list1.length > list2.length ? list1.length : list2.length;
+    var workingList = list1.length > list2.length ? list1 : list2;
+    var otherList = list1.length > list2.length ? list2 : list1;
+
+    for (var i = 0; i < len; i++) {
+        var item = workingList[i];
+        if (otherList.indexof(item) > -1) {
+            // present as common
+            common.push(item);
+        }
+    }
+    return common;
+}
+
+
+/**
+ * gets the uncommon classes from the list.
+ * @param {} classesWithSpace1 : classes with spaces eg. "Hello world"
+ * @param {} classesWithSpace2  : classes with spaces eg "world Hello v"
+ * @returns {} return a array list of common classes eg. ["v"]
+ */
+$.getUnCommonClasses = function (classesWithSpace1, classesWithSpace2) {
+    var list1 = classesWithSpace1.split(" "),
+        list2 = classesWithSpace2.split(" "),
+        unCommon = [];
+    var len = list1.length > list2.length ? list1.length : list2.length;
+    var workingList = list1.length > list2.length ? list1 : list2;
+    var otherList = list1.length > list2.length ? list2 : list1;
+
+    for (var i = 0; i < len; i++) {
+        var item = workingList[i];
+        if (otherList.indexof(item) === -1) {
+            // not present uncommon
+            unCommon.push(item);
+        }
+        item = otherList.length < i ? otherList[i] : null;
+        if (item !== null && workingList.indexof(item) === -1) {
+            // not present uncommon
+            unCommon.push(item);
+        }
+    }
+    return unCommon;
+}
+/**
  *  @returns array of classes names.
  */
 $.getClassesList = function ($jQueryObject) {
@@ -36,7 +123,7 @@ $.getClassesList = function ($jQueryObject) {
     return null;
 };
 
-$.getArrayExcept = function(givenArray, excludingArray) {
+$.getArrayExcept = function (givenArray, excludingArray) {
     /// <summary>
     /// givenArray = ['a','b','c'] , excludingArray=['b','c'], results=['a']
     /// </summary>
@@ -142,7 +229,7 @@ $.squareToHtmlTag = function ($jQueryInput, tag) {
     $jQueryInput.val(currentText);
 };
 //validation modification
-$.checkValidInputs = function($inputsCollection, starRatingLabel, invalidStarRatingCss) {
+$.checkValidInputs = function ($inputsCollection, starRatingLabel, invalidStarRatingCss) {
     /// <summary>
     /// Check all the inputs jQuery validations.
     /// Also mark to red when invalid by the default valid method. 
@@ -171,8 +258,8 @@ $.checkValidInputs = function($inputsCollection, starRatingLabel, invalidStarRat
             $currentInput = $($inputsCollection[i]);
 
             if ($currentInput.hasClass("common-rating")) {
-                var $ratingContainer = $currentInput.closest("div.rating-container");
-                var $wholeContainer = $ratingContainer.closest("div.star-rating");
+                var $ratingContainer = $currentInput.closest(".rating-container");
+                var $wholeContainer = $ratingContainer.closest(".star-rating");
 
                 if ($currentInput.val() === "0") {
                     $ratingContainer.css(invalidStarRatingCss);
@@ -209,7 +296,7 @@ $.isJson = function (obj) {
     }
     return false;
 };
-$.getHiddenField = function(name) {
+$.getHiddenField = function (name) {
     /// <summary>
     /// Get hidden field object from cache if possible.
     /// </summary>
@@ -218,7 +305,7 @@ $.getHiddenField = function(name) {
     return $.app.hiddenContainer.getHiddenField(name);
 };
 
-$.getHiddenValue = function(name) {
+$.getHiddenValue = function (name) {
     /// <summary>
     /// Get string value of the hidden field.
     /// </summary>
@@ -231,7 +318,7 @@ $.getHiddenValue = function(name) {
     return "";
 };
 
-$.setHiddenValue = function(name, val) {
+$.setHiddenValue = function (name, val) {
     /// <summary>
     /// Get string value of the hidden field.
     /// </summary>
@@ -242,7 +329,7 @@ $.setHiddenValue = function(name, val) {
 };
 
 
-$.isFunc = function(func) {
+$.isFunc = function (func) {
     /// <summary>
     /// Is it it a function.
     /// </summary>
@@ -250,7 +337,7 @@ $.isFunc = function(func) {
     /// <returns type="">Returns true/false</returns>
     return typeof func === "function";
 };
-$.executeFunction = function(func) {
+$.executeFunction = function (func) {
     /// <summary>
     /// Execute only if it is a function
     /// </summary>
@@ -258,8 +345,26 @@ $.executeFunction = function(func) {
     /// <returns type="">Returns true/false</returns>
     if (typeof func === "function") {
         func.apply();
+        return true;
     }
+    return false;
 };
+
+$.executeFunctionWithArguments = function (func, argumentsArray) {
+    /// <summary>
+    /// Execute only if it is a function.
+    /// Catch the arguments with arguments variable inside the function.
+    /// </summary>
+    /// <param name="func">Anything</param>
+    /// <param name="argumentsArray">Pass an array of arguments.</param>
+    /// <returns type="">Returns true/false</returns>
+    if (typeof func === "function") {
+        func.apply(null, argumentsArray);
+        return true;
+    }
+    return false;
+};
+
 
 $.getJsonToQueryString = function (url, json, isQuestionMarkRequired) {
     /// <summary>
@@ -292,7 +397,7 @@ $.getJsonToQueryString = function (url, json, isQuestionMarkRequired) {
     return "";
 };
 
-$.applyAutoResizeMultiline = function($container) {
+$.applyAutoResizeMultiline = function ($container) {
     /// <summary>
     /// Apply auto size on the elements which has elastic or autosize-enabled class.
     /// </summary>
@@ -310,7 +415,7 @@ $.applyAutoResizeMultiline = function($container) {
         $autoSizableElements.elastic();
     }
 };
-$.hideEmptyFields = function($container) {
+$.hideEmptyFields = function ($container) {
     /// <summary>
     /// Hide elements which has empty input fields.
     /// </summary>
@@ -369,7 +474,7 @@ $.getjQueryElementsByArrayOfSelectors = function (arrayOfSelectors) {
  * @param {} $singleForm 
  * @returns {} 
  */
-$.serializeToJson = function($singleForm) {
+$.serializeToJson = function ($singleForm) {
     var result = {};
     var formItemsArray = $singleForm.serializeArray();
     for (var i = 0; i < formItemsArray.length; i++) {

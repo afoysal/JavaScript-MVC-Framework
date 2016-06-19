@@ -1,18 +1,45 @@
 ﻿/// <reference path="../jQueryExtend.js" />
-;$.app.controllers = $.app.controllers || {};
-$.app.controllers.initialize = function () {
+/// <reference path="controllers.js" />
+//; $.app.controllers = $.app.controllers || {};
+$.app.controllers.initialize = function (controllerName) {
     /// <summary>
     /// Run all modules inside controllers.
     /// </summary>
-    var self = $.app.controllers;
+    var app = $.app,
+        controllersList = app.controllers,
+        runAll = true,
+        keys = [], 
+        key,
+        pageId,
+        i,
+        controllers = app.controllers,
+        currentController,
+        bindingEventsNames,
+        binding = app.events.binding;
+    if ($.isEmpty(controllerName)) {
+        keys = Object.keys(controllersList);
+    } else {
+        keys = controllerName.split(",");
+    }
 
-    var keys = Object.keys(self);
-    for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        var nameSpace = self[key];
-        if ($.isJson(nameSpace)) {
-            var initialize = nameSpace["initialize"];
-            $.executeFunction(initialize);
+    for (i = 0; i < keys.length; i++) {
+        key = keys[i];
+        currentController = controllersList[key];
+        pageId = currentController["pageId"];
+        if (!$.isEmpty(pageId)) {
+            if (controllers.isCurrentPage(currentController)) {
+                if (controllers.execute(currentController, runAll)) {
+                    bindingEventsNames = controllers.getPageBindings(currentController);
+                    if (bindingEventsNames === "*") {
+                        // binds all bindings
+                        binding.executeAll(currentController);
+                    } else if (bindingEventsNames !== "") {
+                        // binds specific events using csv
+                        binding.execute(currentController, bindingEventsNames);
+                    }
+                    $.executeFunction(currentController["initialize"]);
+                }
+            }
         }
     }
 }

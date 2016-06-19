@@ -1,14 +1,11 @@
-﻿$.app.controllers = $.app.controllers || {};
+﻿//$.app.controllers = $.app.controllers || {};
 $.app.controllers.homeController = {
     // any thing related to controllers.
     pageId: "home",
     $pageElement: null,
     initialize: function () {
-        var controllers = $.app.controllers,
-            current = controllers.homeController;
-        if (controllers.isCurrentPage(current)) {
-            controllers.execute(current);
-        }
+        //anything to config
+
     },
     isDebugging: true,
     actions: {

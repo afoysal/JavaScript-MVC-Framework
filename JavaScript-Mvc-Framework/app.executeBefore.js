@@ -31,6 +31,28 @@ $.app.executeBefore = {
             }
         }
     },
+    dynamicDependedCombo: function () {
+        // load dynamic and depended select or combo
+        var $selectPickers = $(".selectpicker");
+        if ($selectPickers.length > 0) {
+            $.devOrg.dynamicSelect.initialize();
+            $selectPickers.selectpicker();
+            $.devOrg.bootstrapComboSelectIndex($selectPickers, 0);
+        }
+    },
+    elasticTextAreas: function () {
+        var $textAreas = $("textarea");
+        if ($textAreas.length > 0) {
+            $textAreas.filter(".big-multiline").focus(function () {
+                $(this).animate({ 'height': '300px', 'width': '630px', 'max-width': '630px' }, 400);
+            }).blur(function () {
+                $(this).animate({ 'height': 'auto', 'width': '294px', 'max-width': '294px' }, 400);
+            });
+            //making textarea's elastic
+            $textAreas.elastic().trigger('update');
+        }
+
+    },
     toolTipShow: function () {
         var $tooltipItems = $('.tooltip-show');
         if ($tooltipItems.length > 0) {
@@ -46,28 +68,29 @@ $.app.executeBefore = {
     },
     menuEnable: function () {
         $().jetmenu();
-        var menuPage = $("#menu-item-edit-page");
-        if (menuPage.length > 0) {
-            var div = $("#hasDropdownDiv");
-            div.hide();
-            $("#HasDropDown").click(function () {
+        var $menuPage = $("#menu-item-edit-page");
+        if ($menuPage.length > 0) {
+            var $div = $("#hasDropdownDiv"),
+                $hasDropDown = $("#HasDropDown");
+            $div.hide();
+            $hasDropDown.click(function () {
                 if (this.checked) {
-                    div.show('slow');
+                    $div.show('slow');
                 } else {
-                    div.hide('slow');
+                    $div.hide('slow');
                 }
             });
         }
     },
     bootstrapTableComponentEnable: function () {
-        var $tables = $("table.bootstrap-table-do");
+        var $tables = $(".bootstrap-table-do");
         if ($tables.length > 0) {
             $tables.bootstrapTable();
         }
     },
     datePickerComponentEnable: function () {
-        if ($.isFunc($.datetimepicker)) {
-            $(".datetimepicker-start").datetimepicker({
+        var $dateTimePicker = $(".datetimepicker-start"),
+            options = {
                 pickDate: true, //en/disables the date picker
                 pickTime: true, //en/disables the time picker
                 useMinutes: true, //en/disables the minutes picker
@@ -78,85 +101,47 @@ $.app.executeBefore = {
                 disabledDates: [], //an array of dates that cannot be selected
                 enabledDates: [], //an array of dates that can be selected
                 sideBySide: true //show the date and time picker side by side
-
-            });
-
-            $(".datepicker-start").datetimepicker({
-                pickDate: true, //en/disables the date picker
-                pickTime: false, //en/disables the time picker
-                useMinutes: false, //en/disables the minutes picker
-                useSeconds: false, //en/disables the seconds picker
-                useCurrent: true, //when true, picker will set the value to the current date/time     
-                minuteStepping: 1, //set the minute stepping
-                defaultDate: "", //sets a default date, accepts js dates, strings and moment objects
-                disabledDates: [], //an array of dates that cannot be selected
-                enabledDates: [], //an array of dates that can be selected
-                sideBySide: true //show the date and time picker side by side
-            });
+            };
+        if ($dateTimePicker.length > 0) {
+            $dateTimePicker.datetimepicker(options);
         }
-    },
-    tagComponentEnable: function () {
-        var $processForm = $.byId("server-validation-form");
-        if ($processForm.length > 0) {
-            var $createdTags = $(".tag-inputs");
-            if ($createdTags.length > 0) {
-                var $tokenField = $processForm.find("[name='__RequestVerificationToken']"),
-                    token = $tokenField.val();
-                for (var i = 0; i < $createdTags.length; i++) {
-                    var $tagsInput = $($createdTags[0]),
-                        urlToPost = $tagsInput.attr("data-url");
-                    //
-                    $tagsInput.tagsinput({
-                        freeInput: true,
-                        trimValue: true,
-                        typeahead: {
-                            source: function (query) {
-                                return $.post(urlToPost, { id: query, __RequestVerificationToken: token }).done(function (response) {
-                                    //console.log("tags:");
-                                    //console.log("response:");
-                                    //console.log(response);
-                                });
-                            }
-                        },
-                        onTagExists: function (item, $tag) {
-                            if ($.isEmpty($tag)) {
-                                $tag.hide.fadeIn();
-                            }
-                        }
-                    });
-                }
-            }
-
+        var $datePicker = $(".datepicker-start");
+        if ($datePicker.length > 0) {
+            options.pickTime = false;
+            options.useMinutes = false;
+            options.useSeconds = false;
+            $datePicker.datetimepicker(options);
         }
     },
     transactionStatusEnable: function () {
-        var $transaction = $.byId("transaction-container"),
-            hideTimeOut = parseInt($transaction.attr("data-hide-duration"));
+        var $transaction = $("#transaction-container"),
+            hideTimeOut = 0;
+        if ($transaction.length !== 0) {
+            if ($transaction.length > 0) {
+                hideTimeOut = parseInt($($transaction[0]).attr("data-hide-duration"));
+            }
 
-        var hideStatus = function () {
-            $transaction.attr("data-shown", "true");
-            $transaction.hide(500);
-        };
-        var timer = setTimeout(hideStatus, hideTimeOut);
+            var hideStatus = function () {
+                $transaction.each(function (index) {
+                    var $this = $(this);
+                    $this.attr("data-shown", "true")
+                        .hide(500);
+                });
+            };
+            var timer = setTimeout(hideStatus, hideTimeOut);
 
-        var stopTimer = function () {
-            clearTimeout(timer);
+            var stopTimer = function () {
+                clearTimeout(timer);
+            }
+
+            $transaction.click(function () {
+                stopTimer();
+                hideStatus();
+            });
         }
+    },
 
-        $transaction.click(function () {
-            stopTimer();
-            hideStatus();
-        });
-    },
-    loadWow: function () {
-        var wow = new WOW({
-            boxClass: 'wow', // animated element css class (default is wow)
-            animateClass: 'animated', // animation css class (default is animated)
-            offset: 100, // distance to the element when triggering the animation (default is 0)
-            mobile: false // trigger animations on mobile devices (true is default)
-        });
-        wow.init();
-    },
+  
 
     ratingComponentEnable: function () {
         var $frontPageRatings = $.findCached(".rating-5-front");
@@ -201,107 +186,4 @@ $.app.executeBefore = {
             });
         }
     },
-
-    owlCaroselComponentEnable: function () {
-        var ownComponentEnable = $.findCachedId("owl-carousel-component");
-        if (ownComponentEnable.length > 0) {
-            $("div.app-suggested-list-items-mobile,div.featured-apps-list-items").owlCarousel({
-                responsiveClass: true,
-                navigation: true,
-                navigationText: [
-                    "<i class='fa fa-chevron-circle-left'></i>",
-                    "<i class='fa fa-chevron-circle-right'></i>"
-                ],
-                items: 1, //10 items above 1000px browser width
-                //itemsDesktop: [1152, 6], //5 items between 1000px and 901px
-                //itemsDesktopSmall: [900, 4], // betweem 900px and 601px
-                //itemsTablet: [600, 3], //2 items between 600 and 0
-                //itemsMobile: [450, 2],
-                itemsCustom: [370, 1]
-            });
-
-            var $suggestionCarosel = $(".owl-list");
-            if ($suggestionCarosel.length > 0) {
-                $suggestionCarosel.owlCarousel({
-                    navigation: true,
-                    navigationText: [
-                        "<i class='fa fa-chevron-circle-left'></i>",
-                        "<i class='fa fa-chevron-circle-right'></i>"
-                    ],
-                    items: 7, //10 items above 1000px browser width
-                    itemsDesktop: [1152, 6], //5 items between 1000px and 901px
-                    itemsDesktopSmall: [966, 5], // betweem 900px and 601px
-                    itemsTabletSmall: [730, 4],
-                    itemsTablet: [600, 3], //2 items between 600 and 0
-                    //itemsCustom: [[0, 2], [435, 3], [450, 2], [600, 3], [730, 4], [900, 5],  [950, 6]], // [[740, 6], [1000, 8], [1200, 10], [1600, 16]]
-                    itemsMobile: [450, 2]
-                    //itemsScaleUp: false
-
-                });
-            }
-
-            var $appsPreview = $("#apps-preview");
-            if ($appsPreview.length > 0) {
-                $appsPreview.owlCarousel({
-                    slideSpeed: 300,
-                    paginationSpeed: 400,
-                    singleItem: true,
-                    items: 1,
-                    itemsDesktop: false,
-                    itemsDesktopSmall: false,
-                    itemsTablet: false,
-                    itemsMobile: false,
-                    stopOnHover: true,
-                    navigation: true, // Show next and prev buttons
-                    pagination: false,
-                    autoHeight: true,
-                    navigationText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"]
-                });
-            }
-
-        }
-    },
-
-    revolutionGalleryComponentEnable: function () {
-        var gallery = $.findCachedId("revolution-gallery-component");
-        if (gallery.length > 0) {
-            var $frontPageGallyery = $(".tp-banner");
-            if ($frontPageGallyery.length > 0) {
-                $frontPageGallyery.show().revolution({
-                    dottedOverlay: "none",
-                    delay: 5000,
-                    startwidth: 960,
-                    startheight: 320,
-                    hideThumbs: 10,
-                    fullWidth: "off",
-                    navigationType: "bullet",
-                    navigationStyle: "preview2",
-                    forceFullWidth: "off"
-                });
-            }
-        }
-    },
-
-    enableIsotopComponent: function () {
-        //filtering through isotop
-        var $required = $.findCachedId("isotop-component");
-        if ($required.length > 0) {
-            var $isotopContainer = $("ul.search-page-apps-list");
-            if ($isotopContainer.length > 0) {
-                var $filterIsotopItems = $('.filter li a');
-                if ($filterIsotopItems.length > 0) {
-                    $filterIsotopItems.click(function () {
-                        $('.filter').find("li a").removeClass('active');
-                        $(this).addClass('active');
-                        var selector = $(this).attr('data-filter');
-
-                        $isotopContainer.isotope({
-                            filter: selector
-                        });
-                        return false;
-                    });
-                }
-            }
-        }
-    }
 };

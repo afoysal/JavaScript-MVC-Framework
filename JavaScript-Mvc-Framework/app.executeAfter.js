@@ -1,8 +1,4 @@
 ﻿/// <reference path="byId.js" />
-/// <reference path="D:\Working (SSD)\GitHub\WereViewProject\WereViewApp\Content/Scripts/toastr.js" />
-/// <reference path="D:\Working (SSD)\GitHub\WereViewProject\WereViewApp\Content/Scripts/jquery-2.1.4.js" />
-/// <reference path="D:\Working (SSD)\GitHub\WereViewProject\WereViewApp\Content/Scripts/jquery.blockUI.js" />
-/// <reference path="D:\Working (SSD)\GitHub\WereViewProject\WereViewApp\Content/Scripts/jquery-2.1.4.intellisense.js" />
 /// <reference path="app.global.js" />
 ; $.app = $.app || {};
 /**
@@ -20,6 +16,10 @@ $.app.executeAfter = {
             clearTimeout(timer);
         }, 2500);
     },
+    /**
+     * bind anchor click prevention 
+     * @returns {} 
+     */
     captureAnchorAndShowSpinner: function () {
         var $anchors = $.findCached("a:link");
         $anchors.click(function (e) {
@@ -27,9 +27,10 @@ $.app.executeAfter = {
                 href = $link.attr("href");
             if (!$.isEmpty(href)) {
                 var startsWith = href[0];
-                if (startsWith !== "#") {
+                var isInvalidUrl = href === "" || startsWith === "" || startsWith === "#" || href.indexOf("javascript") > -1;
+                if (!isInvalidUrl) {
                     e.preventDefault();
-                    $.app.global.documentFullSpinnerShow("... Please Wait ...");
+                    $.app.global.documentFullSpinnerShow("...Please Wait...");
                     window.location = $link.attr("href");
                 }
             }
